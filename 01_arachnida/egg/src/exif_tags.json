@@ -1,0 +1,130 @@
+{
+  "tags": {
+    "0x010F": {
+      "id": 271,
+      "name": "Make",
+      "description": "Manufacturer of the recording equipment."
+    },
+    "0x0110": {
+      "id": 272,
+      "name": "Model",
+      "description": "Model name or number of the equipment."
+    },
+    "0x0112": {
+      "id": 274,
+      "name": "Orientation",
+      "description": "The image orientation viewed in terms of rows and columns.",
+      "values": {
+        "1": "Top-left (Normal)",
+        "2": "Top-right (Mirrored horizontally)",
+        "3": "Bottom-right (180° rotation)",
+        "4": "Bottom-left (Mirrored vertically)",
+        "5": "Left-top (Mirrored and rotated 90° CCW)",
+        "6": "Right-top (90° CW)",
+        "7": "Right-bottom (Mirrored and rotated 90° CW)",
+        "8": "Left-bottom (270° CW)"
+      }
+    },
+    "0x0132": {
+      "id": 306,
+      "name": "DateTime",
+      "description": "Date and time of image modification."
+    },
+    "0x829A": {
+      "id": 33434,
+      "name": "ExposureTime",
+      "description": "Exposure time, given in seconds."
+    },
+    "0x829D": {
+      "id": 33437,
+      "name": "FNumber",
+      "description": "The F-number (aperture)."
+    },
+    "0x8827": {
+      "id": 34855,
+      "name": "ISOSpeedRatings",
+      "description": "ISO speed and sensitivy of the camera."
+    },
+    "0x9003": {
+      "id": 36867,
+      "name": "DateTimeOriginal",
+      "description": "Date and time when the original image data was generated."
+    },
+    "0x9201": {
+      "id": 37377,
+      "name": "ShutterSpeedValue",
+      "description": "Shutter speed (Apex value)."
+    },
+    "0x9202": {
+      "id": 37378,
+      "name": "ApertureValue",
+      "description": "Lens aperture (Apex value)."
+    },
+    "0x920A": {
+      "id": 37386,
+      "name": "FocalLength",
+      "description": "Actual focal length of the lens in millimeters."
+    },
+    "0xA002": {
+      "id": 40962,
+      "name": "ExifImageWidth",
+      "description": "Valid width of the image in pixels."
+    },
+    "0xA003": {
+      "id": 40963,
+      "name": "ExifImageHeight",
+      "description": "Valid height of the image in pixels."
+    }
+  },
+  "pointer_tags": {
+    "0x8825": {
+      "id": 34853,
+      "name": "GPSInfo",
+      "description": "A pointer to the GPS Info IFD block."
+    }
+  },
+  "gps_tags": {
+    "0x0001": {
+      "id": 1,
+      "name": "GPSLatitudeRef",
+      "description": "Indicates whether the latitude is North or South ('N' or 'S').",
+      "values": {
+        "N": "North",
+        "S": "South"
+      }
+    },
+    "0x0002": {
+      "id": 2,
+      "name": "GPSLatitude",
+      "description": "Indicates the latitude (stored as 3 rational values: degrees, minutes, seconds)."
+    },
+    "0x0003": {
+      "id": 3,
+      "name": "GPSLongitudeRef",
+      "description": "Indicates whether the longitude is East or West ('E' or 'W').",
+      "values": {
+        "E": "East",
+        "W": "West"
+      }
+    },
+    "0x0004": {
+      "id": 4,
+      "name": "GPSLongitude",
+      "description": "Indicates the longitude (stored as 3 rational values: degrees, minutes, seconds)."
+    },
+    "0x0005": {
+      "id": 5,
+      "name": "GPSAltitudeRef",
+      "description": "Indicates the altitude reference (0 = Sea level, 1 = Sea level reference negative).",
+      "values": {
+        "0": "Sea level",
+        "1": "Sea level reference negative"
+      }
+    },
+    "0x0006": {
+      "id": 6,
+      "name": "GPSAltitude",
+      "description": "Indicates the altitude in meters above the reference."
+    }
+  }
+}
