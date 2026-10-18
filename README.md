@@ -1,5 +1,5 @@
 # About Piscine Cybersecurity
-This project's aim is to familiarized with offense/defense tools commonly known by Cybersecurity workers.
+This project's aim is to familiarize with offense/defense tools commonly known by Cybersecurity workers.
 
 ## List of Projects
 - arachnida - Web
