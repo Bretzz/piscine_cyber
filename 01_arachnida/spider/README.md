@@ -12,7 +12,7 @@ If not indicated, it will be 5.
 - Option -p [PATH] : indicates the path where the downloaded files will be saved.
 If not specified, `./data/` will be used.
 - Option -v : verbosely display each step
-- Option --moss : scrape each found URL, regardless of Host
+- Option --spread : scrape each found URL, regardless of Host
 
 The program will download the following extensions by default:
 - .jpg/jpeg
