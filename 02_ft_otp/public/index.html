@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Authenticator App</title>
+    <!-- QRCode.js Library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --error: #ef4444;
+            --success: #22c55e;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            color: var(--text);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        input {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .message {
+            margin-top: 12px;
+            font-size: 0.875rem;
+            word-break: break-all;
+        }
+
+        .error {
+            color: var(--error);
+            font-weight: 500;
+        }
+
+        .success {
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        #qrcode {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Form 1: Generate New OTP -->
+    <div class="card">
+        <h2>1. Generate OTP QR</h2>
+        <form id="newOtpForm">
+            <div class="form-group">
+                <label for="newAccount">Username / Account</label>
+                <input type="text" id="newAccount" placeholder="e.g. user@example.com" required autocomplete="off">
+            </div>
+            <button type="submit">Generate QR Code</button>
+        </form>
+        
+        <div id="newOtpMessage" class="message"></div>
+        <div id="qrcode"></div>
+    </div>
+
+    <!-- Form 2: Validate OTP -->
+    <div class="card">
+        <h2>2. Validate OTP</h2>
+        <form id="validateOtpForm">
+            <div class="form-group">
+                <label for="valAccount">Username / Account</label>
+                <input type="text" id="valAccount" placeholder="e.g. user@example.com" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="valOtp">6-Digit Code</label>
+                <input type="text" id="valOtp" placeholder="123456" maxlength="6" pattern="[0-9]{6}" required autocomplete="off">
+            </div>
+            <button type="submit">Validate</button>
+        </form>
+
+        <div id="validateMessage" class="message"></div>
+    </div>
+
+</div>
+
+<script>
+    let qrCodeInstance = null;
+
+    // --- 1. POST /api/otp/new Handler ---
+    document.getElementById('newOtpForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        
+        const accountInput = document.getElementById('newAccount').value.trim();
+        const msgDiv = document.getElementById('newOtpMessage');
+        const qrContainer = document.getElementById('qrcode');
+
+        // Reset display state
+        msgDiv.className = "message";
+        msgDiv.textContent = "Generating...";
+        qrContainer.innerHTML = "";
+
+        try {
+            const response = await fetch('/api/otp/new', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ account: accountInput })
+            });
+
+            const text = await response.text();
+
+            if (response.status === 201) {
+                msgDiv.className = "message success";
+                msgDiv.textContent = "Scan the QR code with your Authenticator app:";
+                
+                // Auto-fill validation account field for convenience
+                document.getElementById('valAccount').value = accountInput;
+
+                // Render QR Code using qrcodejs
+                qrCodeInstance = new QRCode(qrContainer, {
+                    text: text,
+                    width: 180,
+                    height: 180,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            } else {
+                // Handle 300, 502, or other error HTTP statuses
+                msgDiv.className = "message error";
+                msgDiv.textContent = `Error (${response.status}): ${text || "Failed to generate OTP"}`;
+            }
+        } catch (err) {
+            msgDiv.className = "message error";
+            msgDiv.textContent = `Network Error: ${err.message}`;
+        }
+    });
+
+    // --- 2. POST /api/otp/validate Handler ---
+    document.getElementById('validateOtpForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const accountInput = document.getElementById('valAccount').value.trim();
+        const otpInput = document.getElementById('valOtp').value.trim();
+        const msgDiv = document.getElementById('validateMessage');
+
+        msgDiv.className = "message";
+        msgDiv.textContent = "Validating...";
+
+        try {
+            const response = await fetch('/api/otp/validate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ account: accountInput, otp: otpInput })
+            });
+
+            const text = await response.text();
+
+            if (response.status === 200) {
+                msgDiv.className = "message success";
+                msgDiv.textContent = "✅ OTP Validated Successfully!";
+            } else if (response.status === 403) {
+                msgDiv.className = "message error";
+                msgDiv.textContent = "❌ Invalid OTP code. Please try again.";
+            } else if (response.status === 404) {
+                msgDiv.className = "message error";
+                msgDiv.textContent = "❌ Account not found.";
+            } else {
+                msgDiv.className = "message error";
+                msgDiv.textContent = `Error (${response.status}): ${text || "Validation failed"}`;
+            }
+        } catch (err) {
+            msgDiv.className = "message error";
+            msgDiv.textContent = `Network Error: ${err.message}`;
+        }
+    });
+</script>
+
+</body>
+</html>
