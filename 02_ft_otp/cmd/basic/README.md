@@ -3,11 +3,14 @@ Simple Hash based One Time Password implementation in Golang.
 
 ## Usage
 ```
-ft_otp -[kgeh] [FILE]
+ft_otp -[egkh] [FILE]
 flags:
-	-k: Generate an OTP value from the encrypted key stored in ft_otp.key.
-	-g FILE: Generate a new key based on a plaintext file.
-	-e FILE: Source the .env file for enviroment variables.
+	-e string
+        Source the .env file for enviroment variables. (default ".env")
+	-g string
+        Generate a new key based on a plaintext file. (default "key.txt")
+	-k string
+        Produce an OTP value from the encrypted key stored in FILE. (default "ft_otp.key")
 	-h: Print this menu.
 ```
 ```bash
@@ -21,7 +24,7 @@ AES_KEY="AES256Key-32Characters1234567890"  # Mandatory
 
 ## TODO
 - [x] Read file main.go
-- [ ] Clean `gen` back up
-- [ ] Make `gen` a library and import it
-- [ ] Move OTPKey class in separate file
-- [ ] Auth server (timestep, tollerance, one time validation)
+- [x] Clean `gen` back up
+- [x] Make `gen` a library and import it
+- [x] Move OTPKey class in separate file
+- [x] Auth server (timestep, tollerance, one time validation)
