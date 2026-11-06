@@ -8,26 +8,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
+            --primary: #3b82f6;
+            --primary-dark: #1d4ed8;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #0f172a;
+            --text-muted: #64748b;
             --error: #ef4444;
-            --success: #22c55e;
+            --success: #10b981;
             --border: #e2e8f0;
+            --grid: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
+            /* Minimalist geometric grid background */
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
             color: var(--text);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 24px;
         }
 
         .container {
@@ -35,95 +46,189 @@
             max-width: 440px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
+        /* Minimal Header */
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--text);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border-radius: 2px;
+        }
+
+        .app-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        /* Sharp Minimalist Card */
         .card {
             background: var(--card-bg);
             padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 2px;
             border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+            position: relative;
+        }
+
+        /* Top geometric color bar */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            height: 3px;
+            background: var(--text);
+        }
+
+        .card.accent-primary::before {
+            background: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: #f1f5f9;
+            color: var(--text);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: 2px;
         }
 
         h2 {
-            margin-top: 0;
-            margin-bottom: 16px;
-            font-size: 1.25rem;
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 700;
             color: var(--text);
+            letter-spacing: -0.01em;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             margin-bottom: 16px;
         }
 
         label {
-            font-size: 0.875rem;
-            font-weight: 600;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-muted);
         }
 
         input {
             padding: 10px 14px;
             border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 1rem;
+            border-radius: 2px;
+            font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.2s;
+            background: #fff;
+            color: var(--text);
+            font-family: inherit;
+            transition: all 0.15s ease;
         }
 
+        input.font-mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            letter-spacing: 0.1em;
+        }
+
+        /* Geometric Focus State */
         input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         button {
-            background-color: var(--primary);
+            background-color: var(--text);
             color: white;
             border: none;
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 2px;
+            font-size: 0.9rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: background-color 0.15s ease;
         }
 
         button:hover {
-            background-color: var(--primary-hover);
+            background-color: var(--primary);
+        }
+
+        button:active {
+            transform: translateY(1px);
         }
 
         .message {
-            margin-top: 12px;
-            font-size: 0.875rem;
+            margin-top: 14px;
+            font-size: 0.85rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            padding: 8px 12px;
+            border-radius: 2px;
             word-break: break-all;
+        }
+
+        .message:empty {
+            display: none;
         }
 
         .error {
             color: var(--error);
-            font-weight: 500;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
         }
 
         .success {
             color: var(--success);
-            font-weight: 500;
+            background: #ecfdf5;
+            border: 1px solid #a7f3d0;
         }
 
         #qrcode {
             margin-top: 16px;
             display: flex;
             justify-content: center;
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
+            padding: 16px;
+            background: #ffffff;
+            border: 1px dashed var(--border);
+            border-radius: 2px;
         }
 
-        hr {
-            border: 0;
-            border-top: 1px solid var(--border);
-            margin: 0;
+        #qrcode:empty {
+            display: none;
         }
     </style>
 </head>
@@ -131,9 +236,17 @@
 
 <div class="container">
 
+    <div class="app-header">
+        <div class="header-icon">△</div>
+        <h1 class="app-title">OTP Authenticator</h1>
+    </div>
+
     <!-- Form 1: Generate New OTP -->
     <div class="card">
-        <h2>1. Generate OTP QR</h2>
+        <div class="card-header">
+            <span class="badge">01</span>
+            <h2>Generate OTP QR</h2>
+        </div>
         <form id="newOtpForm">
             <div class="form-group">
                 <label for="newAccount">Username / Account</label>
@@ -147,8 +260,11 @@
     </div>
 
     <!-- Form 2: Validate OTP -->
-    <div class="card">
-        <h2>2. Validate OTP</h2>
+    <div class="card accent-primary">
+        <div class="card-header">
+            <span class="badge">02</span>
+            <h2>Validate OTP</h2>
+        </div>
         <form id="validateOtpForm">
             <div class="form-group">
                 <label for="valAccount">Username / Account</label>
@@ -156,7 +272,7 @@
             </div>
             <div class="form-group">
                 <label for="valOtp">6-Digit Code</label>
-                <input type="text" id="valOtp" placeholder="123456" maxlength="6" pattern="[0-9]{6}" required autocomplete="off">
+                <input type="text" id="valOtp" class="font-mono" placeholder="123456" maxlength="6" pattern="[0-9]{6}" required autocomplete="off">
             </div>
             <button type="submit">Validate</button>
         </form>
@@ -203,7 +319,7 @@
                     text: text,
                     width: 180,
                     height: 180,
-                    colorDark : "#000000",
+                    colorDark : "#0f172a",
                     colorLight : "#ffffff",
                     correctLevel : QRCode.CorrectLevel.H
                 });
