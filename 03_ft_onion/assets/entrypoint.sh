@@ -21,7 +21,9 @@ done
 
 # Update nginx.conf with the generated address
 ONION_ADDR=$(cat /var/lib/tor/ft_onion/hostname)
-echo "Generated address: $ONION_ADDR"
+echo ">"
+echo "> Onion Address: $ONION_ADDR"
+echo ">"
 
 sed -i "s|REPLACE_WITH_GENERATED_ADDRES|${ONION_ADDR}|g" /etc/nginx/nginx.conf
 
