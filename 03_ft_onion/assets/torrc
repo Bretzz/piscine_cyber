@@ -1,0 +1,6 @@
+# so entrypoint,sh can fork it safely
+RunAsDaemon 1
+
+# Setup the Onion Service
+HiddenServiceDir /var/lib/tor/ft_onion/
+HiddenServicePort 80 unix:/var/lib/tor/ft_onion/onion.sock
