@@ -23,7 +23,7 @@ key.hex:
 
 fclean:
 	@rm -f $(NAME) .env key.hex ft_otp.key
-	@rm -rf otpkeys
+	@rm -rf $(VALIDATOR) otpkeys
 
 re: fclean all
 
