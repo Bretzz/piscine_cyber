@@ -15,14 +15,14 @@ $(VALIDATOR):
 	@cd $(SRCDIR) && go build ./cmd/server
 	@mv $(SRCDIR)/server $(ROOT)/$(VALIDATOR)
 
-key.txt:
+key.hex:
 	@openssl rand -hex 64 | tr -d '\n' > $@
 
 .env:
 	@echo "AES_KEY=\"$$(openssl rand -base64 32)\"" > $@
 
 fclean:
-	@rm -f $(NAME) .env key.txt ft_otp.key
+	@rm -f $(NAME) .env key.hex ft_otp.key
 	@rm -rf otpkeys
 
 re: fclean all
