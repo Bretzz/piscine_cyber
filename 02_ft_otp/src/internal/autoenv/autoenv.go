@@ -24,8 +24,8 @@ func parseLine(line string) (EnvEntry, error) {
 	value := line[eq+1:]
 
 	// parse data
-	value = strings.Trim(value, " 	\n\t\"'")
-	key = strings.Trim(key, " 	\n\t")
+	value = strings.Trim(value, "\"'")
+	// key = strings.Trim(key, " 	\n\t")
 
 	return EnvEntry{Key: key, Value: value}, nil
 }
@@ -48,7 +48,8 @@ func parseEnvFile(envfile string) ([]EnvEntry, error) {
 	for line := range split {
 
 		// trim spaces
-		line = strings.Trim(line, " 	\n\t")
+		line = strings.TrimSpace(line)
+
 		// check comments
 		if len(line) == 0 || line[0] == '#' {
 			continue
@@ -73,7 +74,8 @@ func Load(envfile string) error {
 	}
 
 	for _, e := range entries {
-		// fmt.Printf("Exporting '%s' -> '%s'\n", e.Key, e.Value)
+		// #debug
+		// fmt.Printf("Exporting '%s' -> '%s' (len:%d)\n", e.Key, e.Value, len(e.Value))
 		err := os.Setenv(e.Key, e.Value)
 		if err != nil {
 			return err

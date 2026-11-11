@@ -44,7 +44,7 @@ func main() {
 		// fmt.Printf("reading all file '%s'\n", mode.KeyFILE)
 		secret, err := os.ReadFile(mode.KeyFILE)
 		if err != nil {
-			fmt.Printf("error2: %s\n", err)
+			fmt.Printf("error: %s\n", err)
 			os.Exit(1)
 		}
 		err = totp.GenerateKey(secret, "ft_otp.key")

@@ -1,2 +1,3 @@
-otpkeys/
-key.txt
+*/otpkeys/
+*/key.txt
+*/.env

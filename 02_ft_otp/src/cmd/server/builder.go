@@ -31,9 +31,9 @@ func OTPAuthURL(hexKey, account string) (string, error) {
 	return "otpauth://totp/" + label + "?" + q.Encode(), nil
 }
 
-// 64 hexkey: 32 bytes -> hex encoded 64 bytes
+// 64 hexkey
 func GenerateHexKey(length int) (string, error) {
-	b := make([]byte, length/2)
+	b := make([]byte, length)
 	if _, err := rand.Read(b); err != nil {
 		return "", err
 	}

@@ -2,6 +2,7 @@ package totp
 
 import (
 	"encoding/hex"
+	"encoding/base64"
 	"fmt"
 	"os"
 	"strconv"
@@ -19,14 +20,18 @@ var TIME_STEP uint64 = 30 // seconds
 func LoadEnv() error {
 
 	// AES_KEY
-	aesKey := os.Getenv("AES_KEY")
-	if aesKey == "" {
+	rawKey := os.Getenv("AES_KEY")
+	if rawKey == "" {
 		return fmt.Errorf("No AES-GCM 32bytes encription key. Export the AES_KEY shell env variable.")
+	}
+	aesKey, err := base64.StdEncoding.DecodeString(rawKey)
+	if err != nil {
+		return fmt.Errorf("Error decoding Base64: %s", err)
 	}
 	if len(aesKey) != 16 && len(aesKey) != 32 {
 		return fmt.Errorf("Inavalid AES_KEY length (16 for AES-128, 32 for AES-256).")
 	}
-	AES_KEY = aesKey
+	AES_KEY = string(aesKey)
 
 	// TIME_STEP
 	timeStep := os.Getenv("TIME_STEP")
@@ -54,8 +59,8 @@ func GenerateKey(secret []byte, outfile string) error {
 	raw, err := hex.DecodeString(string(secret))
 
 	// check if is 64 length hexadecimal
-	if err != nil || len(raw) != 32 {
-		return fmt.Errorf("key must be 64 hexadecimal characters.")
+	if err != nil || len(raw) < 64 {
+		return fmt.Errorf("key must be at least 64 hexadecimal characters.")
 	}
 
 	// cipher the decoded secret
