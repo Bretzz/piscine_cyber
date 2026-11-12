@@ -18,13 +18,13 @@ run:
 	docker run -d -p 9050:9050 --name $(NAME)-running $(NAME)
 
 itrain:
-	docker exec -it $(NAME)-running sh
+	@docker exec -it $(NAME)-running sh
 
 logs:
-	docker logs $(NAME)-running
+	@docker logs $(NAME)-running
 
-torssh:
-	ssh -v -o ProxyCommand="nc -X 5 -x 127.0.0.1:9050 %h %p" root@dun5vva2sah5jsr3f2aqa73vxn4mvifeulyfkhr736hoyskbol7jh5id.onion
+address:
+	@docker logs ft_onion-app-running 2>&1 | grep -oE '[a-z2-7]{56}\.onion'
 
 clean:
 	docker rm -f $(NAME)-running
@@ -32,4 +32,4 @@ clean:
 fclean: clean
 	docker image prune -af
 
-.PHONY: build run itrain logs clean fclean
+.PHONY: build run itrain logs clean fclean address
