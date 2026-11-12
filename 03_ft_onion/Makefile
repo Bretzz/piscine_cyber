@@ -1,7 +1,8 @@
 UNAME := $(shell uname)
 NAME := ft_onion-app
+KEY_PATH ?= $$HOME/.ssh/id_ed25519.pub
 
-BFLAGS = -t $(NAME)
+BFLAGS = --secret id=ssh_key,src=$(KEY_PATH) -t $(NAME)
 ifeq ($(UNAME), Darwin)
 	BFLAGS +=
 else
@@ -14,7 +15,6 @@ build:
 	docker build $(BFLAGS) .
 
 run:
-	#docker run -d -p 4242:4242 -p 8080:80 -p 9050:9050 --name $(NAME)-running $(NAME)
 	docker run -d -p 9050:9050 --name $(NAME)-running $(NAME)
 
 itrain:

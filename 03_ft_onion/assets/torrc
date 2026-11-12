@@ -6,6 +6,8 @@ RunAsDaemon 1
 SocksPort 0.0.0.0:9050
 
 # Setup the Onion Service
+# Niginx trough Unix Socket
 HiddenServiceDir /var/lib/tor/ft_onion/
 HiddenServicePort 80 unix:/var/lib/tor/ft_onion/onion.sock
+# SSH trough standard IP routing
 HiddenServicePort 4242 127.0.0.1:22

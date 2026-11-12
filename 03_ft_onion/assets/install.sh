@@ -4,14 +4,8 @@ set -e
 #  Install packages
 apk add --no-cache nginx tor su-exec openssh
 
-# Generate ssh keys and set root password
+# Generate ssh key
 ssh-keygen -A
-source /tmp/assets/.env
-if [ -z "$PASSWD" ]; then
-    echo "Missing root password, exiting."
-    exit 1
-fi
-echo "root:$PASSWD" | chpasswd
 
 # Create the hidden service directory
 mkdir -p /var/lib/tor/ft_onion/
