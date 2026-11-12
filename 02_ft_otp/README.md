@@ -17,9 +17,9 @@ AES_KEY="AES-GCM-32-bytes-encription-key-with-base64-encoding"
 ```
 to generate 32 bytes with base64 encoding: `openssl rand -base64 32`
 
-## key.txt example
+## key.hex example
 To generate a valid key.txt file
-`openssl rand -hex N | tr -d '\n' > key.txt`
-- **N** is the length of the data (min 64)
+`openssl rand -hex N | tr -d '\n' > key.hex`
+- **N** is two times the length of the key (N min 32)
 - **openssl** is the program that generates keys
 - **tr -d '\n'** removes trailing newlines

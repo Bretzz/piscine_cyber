@@ -63,8 +63,8 @@ func GenerateKey(secret []byte, outfile string) error {
 	raw, err := hex.DecodeString(string(secret))
 
 	// check if is 64 length hexadecimal
-	if err != nil || len(raw) < 64 {
-		return fmt.Errorf("key must be at least 64 hexadecimal characters.")
+	if err != nil || len(raw) < 32 {
+		return fmt.Errorf("key must be 64 hexadecimal characters.")
 	}
 
 	// cipher the decoded secret

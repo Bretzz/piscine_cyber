@@ -32,9 +32,9 @@ func parse() (Mode, error) {
 	// f1 := flag.NewFlagSet("f1", flag.ContinueOnError)
 	// help := f1.Bool("h", false, "Print an help menu")
 	key := flag.String("k", "ft_otp.key", "Produce an OTP value from the encrypted key stored in FILE.")
-	gen := flag.String("g", "key.txt", "Generate a new key based on a plaintext file.")
+	gen := flag.String("g", "key.txt", "Generate a new key based on a plaintext FILE.")
 	// sec := flag.String("s", "64-bytes-otp-secret", "Generate a new key based on SECRET argument")
-	env := flag.String("e", ".env", "Source the .env file for enviroment variables.")
+	env := flag.String("e", ".env", "Source the FILE containing enviroment variables.")
 	// out := flag.String("o", "ft_otp.key", "Specifies the output file for the key generation.")
 
 	// flag.

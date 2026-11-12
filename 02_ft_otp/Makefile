@@ -16,7 +16,7 @@ $(VALIDATOR):
 	@mv $(SRCDIR)/server $(ROOT)/$(VALIDATOR)
 
 key.hex:
-	@openssl rand -hex 64 | tr -d '\n' > $@
+	@openssl rand -hex 32 | tr -d '\n' > $@
 
 .env:
 	@echo "AES_KEY=\"$$(openssl rand -base64 32)\"" > $@
@@ -27,4 +27,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: fclean re
+.PHONY: fclean re key.hex .env
