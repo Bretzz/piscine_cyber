@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"time"
 
 	"wasted-kiwi.com/ft_otp/internal/aes"
 	"wasted-kiwi.com/ft_otp/internal/algo"
@@ -40,7 +39,7 @@ func (v *Verifier) Verify(code uint32) (bool, error) {
 	v.mu.Lock()
 	defer v.mu.Unlock()
 
-	cur := uint64(time.Now().UTC().Unix()) / TIME_STEP
+	cur := CurrentTimeStep()
 
 	for _, step := range []uint64{cur - 1, cur, cur + 1} {
 		if step <= v.lastUsed {

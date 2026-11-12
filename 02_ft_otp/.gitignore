@@ -1,3 +1,7 @@
-*/otpkeys/
-*/key.txt
-*/.env
+otpkeys/
+key.hex
+key.txt
+ft_otp
+ft_otp_validator
+*/*.key
+.env

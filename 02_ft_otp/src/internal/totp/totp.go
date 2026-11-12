@@ -1,8 +1,8 @@
 package totp
 
 import (
-	"encoding/hex"
 	"encoding/base64"
+	"encoding/hex"
 	"fmt"
 	"os"
 	"strconv"
@@ -43,16 +43,20 @@ func LoadEnv() error {
 			return err
 		}
 		if ts == 0 {
-			return fmt.Errorf("Invalid TIME_STP of 0.")
+			return fmt.Errorf("Invalid TIME_STEP of 0.")
 		}
 		TIME_STEP = uint64(ts)
 	}
 	return nil
 }
 
+func CurrentTimeStep() uint64 {
+	return uint64(time.Now().UTC().Unix()) / TIME_STEP
+}
+
 /*
  * Produce and encrypted ft_otp.key file containing the key (at least 64 bytes)
- * ft_otp.key: [N: chiphertext] + [16: Auth] + [12: nonce] + [16: EPOCH] = N + 44 bytes, where N is len(plaintext)
+ * ft_otp.key: [N: chiphertext] + [16: Auth] + [12: nonce] = N + 28 bytes, where N is len(plaintext)
  */
 func GenerateKey(secret []byte, outfile string) error {
 
@@ -101,7 +105,7 @@ func ProduceOTP(path string) ([]uint32, error) {
 
 	values := []uint32{}
 	// generate OTP
-	currStep := uint64(time.Now().UTC().Unix()) / TIME_STEP
+	currStep := CurrentTimeStep()
 
 	// Before
 	values = append(values, algo.HOTP([]byte(plaintext), currStep-1))

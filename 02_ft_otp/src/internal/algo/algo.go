@@ -26,7 +26,7 @@ import (
    Return D = Snum mod 10^Digit //  D is a number in the range
                                     0...10^{Digit}-1
 */
-// Generates an Hash from the concatenated Key and Counter.
+// Generates an Hash from the Key and Counter.
 // The counter is rearranged as BigEndian
 func private_HMAC_SHA_1(K []byte, C uint64) []byte {
 	// convert to Big Endian
